@@ -41,7 +41,7 @@
 ```
 .
 ├── pendulum_sim.py              # 仿真核心：Params, simulate()
-├── demo.ipynb                   # 可视化示例：参数设置 + 调用 + 画图
+├── demo.ipynb                   # 可视化示例：参数设置 + 调用 + 画图 （仅使用该文件即可）
 └── README.md                    # 你正在看的文档
 ```
 
