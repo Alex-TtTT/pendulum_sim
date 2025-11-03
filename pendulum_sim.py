@@ -49,7 +49,6 @@ class Params:
 
 
 def simulate(p: Params):
-    """运行仿真并返回字典结果，不做绘图，方便在 Notebook 中复用。"""
     # 角度统一转弧度
     theta_on     = math.radians(p.theta_on_deg)
     theta_target = math.radians(p.theta_target_deg)
@@ -84,6 +83,7 @@ def simulate(p: Params):
     # 轨迹存储
     T, TH, OM, FH = [], [], [], []
     VT, AT, AR = [], [], []   # 切向速度、切向加速度、径向加速度
+    H = [] 
 
     # 动力学（内部函数，闭包捕获 brake_on 等状态）
     def alpha(theta, omega, Fh):
@@ -137,10 +137,12 @@ def simulate(p: Params):
         v_t = p.L * omega
         a_t = p.L * alpha(theta, omega, Fh)
         a_r = -p.L * (omega**2)
+        h = p.L * (1.0 - math.cos(theta))   
+
 
         # 记录
         T.append(t); TH.append(theta); OM.append(omega); FH.append(Fh)
-        VT.append(v_t); AT.append(a_t); AR.append(a_r)
+        VT.append(v_t); AT.append(a_t); AR.append(a_r); H.append(h) 
 
         # 峰值检测：角速度过零
         if (prev_omega > 0 and omega <= 0) or (prev_omega < 0 and omega >= 0):
@@ -187,6 +189,7 @@ def simulate(p: Params):
         "v_t": VT,
         "a_t": AT,
         "a_r": AR,
+        "h": H,   
         "meta": {
             "hit_count": hit_count,
             "brake_on": brake_on,
